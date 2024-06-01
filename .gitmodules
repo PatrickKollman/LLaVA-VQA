@@ -1,3 +1,6 @@
 [submodule "LLaVA"]
 	path = LLaVA
 	url = https://github.com/haotian-liu/LLaVA.git
+[submodule "VQA"]
+	path = VQA
+	url = https://github.com/GT-Vision-Lab/VQA.git
