@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+
+[[tool.mypy.overrides]]
+module = [
+    'numpy.*',
+    'torch.*',
+]
+ignore_missing_imports = true
