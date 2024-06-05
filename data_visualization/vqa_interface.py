@@ -12,17 +12,17 @@ import json
 class VQA:
     """VQA interface module"""
 
-    def __init__(self, annotation_file: str, question_file: str) -> None:
+    def __init__(self, question_file: str, annotation_file: str) -> None:
         """VQA Interface intialization
 
-        :param annotation_file: file path to VQA annotation file
         :param question_file: file path the VQA question file
+        :param annotation_file: file path to VQA annotation file
         """
-        print("Loading VQA annotations and questions into memory...")
-        with open(annotation_file, "r", encoding="utf-8") as f:
-            self.dataset: dict = json.load(f)
+        print("Loading VQA questions and annotations into memory...")
         with open(question_file, "r", encoding="utf-8") as f:
             self.questions: dict = json.load(f)
+        with open(annotation_file, "r", encoding="utf-8") as f:
+            self.dataset: dict = json.load(f)
 
         print("Creating index...")
         self.img_to_qa: dict = {ann["image_id"]: [] for ann in self.dataset["annotations"]}
@@ -34,6 +34,10 @@ class VQA:
         for ques in self.questions["questions"]:
             self.qqa[ques["question_id"]] = ques
         print("Index created!")
+
+        print(f"Image to QA index created with {len(self.img_to_qa)} entries.")
+        print(f"Question to Answer index created with {len(self.qa)} entries.")
+        print(f"Question index created with {len(self.qqa)} entries.")
 
     def info(self) -> None:
         """Print information about the VQA annotation file."""
