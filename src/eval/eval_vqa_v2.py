@@ -11,6 +11,7 @@ import argparse
 import json
 import math
 import os
+from typing import Any
 
 import shortuuid
 import torch
@@ -37,26 +38,32 @@ class VQADataset(Dataset):
     """Dataset class for LLaVA evaluation on VQA"""
 
     def __init__(
-        self, questions: list[dict], image_folder: str, tokenizer, image_processor, model_config, conv_mode: str
-    ):
+        self,
+        questions: list[dict],
+        image_folder: str,
+        conv_mode: str,
+        tokenizer: Any,
+        image_processor: Any,
+        model_config: Any,
+    ) -> None:
         """Initialize VQA dataset class
 
         :param questions: list of JSON question data
         :param image_folder: image folder directory
-        :param tokenizer:
-        :param image_processor:
-        :param model_config:
         :param conv_mode: conversation mode (i.e vicuna_v1)
+        :param tokenizer: tokenizer for pretrained model (i.e LLamaTokenizer)
+        :param image_processor: image processor for pretrained model (i.e CLIPImageProcessor)
+        :param model_config: model config for pretrained model (i.e LLavaConfig)
         """
         self.questions = questions
         self.image_folder = image_folder
+        self.split = self.image_folder.split("/")[-1]
+        self.conv_mode = conv_mode
         self.tokenizer = tokenizer
         self.image_processor = image_processor
         self.model_config = model_config
-        self.conv_mode = conv_mode
-        self.split = self.image_folder.split("/")[-1]
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> tuple[torch.Tensor, torch.Tensor, tuple]:
         """Index into the dataset.
 
         1. Initialize the prompt with the server message, question, and image token.
@@ -64,7 +71,7 @@ class VQADataset(Dataset):
         3. Tokenize the prompt
 
         :param index: index in the dataset
-        :return input_ids:
+        :return input_ids: tokenzed input id tensors
         :return image_tensor: torch tensor of the image
         :return image_size: size of the image
         """
@@ -129,10 +136,10 @@ def get_chunk(lst: list[dict], n: int, k: int) -> list[dict]:
 def create_data_loader(
     questions: list[dict],
     image_folder: str,
-    tokenizer,
-    image_processor,
-    model_config,
     conv_mode: str,
+    tokenizer: Any,
+    image_processor: Any,
+    model_config: Any,
     batch_size: int = 1,
     num_workers: int = 4,
 ) -> DataLoader:
@@ -140,20 +147,23 @@ def create_data_loader(
 
     :param questions: list of JSON question data
     :param image_folder: image folder directory
-    :param tokenizer:
-    :param image_processor:
-    :param model_config:
     :param conv_mode: conversation mode (i.e vicuna_v1)
+    :param tokenizer: tokenizer for pretrained model (i.e LLamaTokenizer)
+    :param image_processor: image processor for pretrained model (i.e CLIPImageProcessor)
+    :param model_config: model config for pretrained model (i.e LLavaConfig)
     :param batch_size: batch size for DataLoader
     :param num_workers: number of CPU workers for DataLoader
+    :return data_loader: VQA dataloader
     """
-    print(f"{type(questions)=}")
-    print(f"{type(tokenizer)=}")
-    print(f"{type(image_processor)=}")
-    print(f"{type(model_config)=}")
-
     assert batch_size == 1, "batch_size must be 1"
-    dataset = VQADataset(questions, image_folder, tokenizer, image_processor, model_config, conv_mode=conv_mode)
+    dataset = VQADataset(
+        questions,
+        image_folder,
+        conv_mode,
+        tokenizer,
+        image_processor,
+        model_config,
+    )
     data_loader = DataLoader(
         dataset,
         batch_size=batch_size,
@@ -164,16 +174,15 @@ def create_data_loader(
     return data_loader
 
 
-def eval_model(args) -> None:
+def eval_model(args: argparse.Namespace) -> None:
     """Evaluate LLaVA on VQA test data.
 
     1. Load pretrained model
     2. Load question and image data and create VQA DataLoader
     3. Generate output answers
 
-    :param args: Argument Parser args
+    :param args: argparse Namespace args
     """
-    print(f"{type(args)=}")
     # Model
     disable_torch_init()
     model_path = os.path.expanduser(args.model_path)
@@ -192,13 +201,18 @@ def eval_model(args) -> None:
 
     # DataLoader
     data_loader = create_data_loader(
-        questions, args.image_folder, tokenizer, image_processor, model.config, args.conv_mode
+        questions,
+        args.image_folder,
+        args.conv_mode,
+        tokenizer,
+        image_processor,
+        model.config,
     )
 
     # Evaluate
-    for (input_ids, image_tensor, image_sizes), line in tqdm(zip(data_loader, questions), total=len(questions)):
-        idx = line["question_id"]
-        cur_prompt = line["text"]
+    for (input_ids, image_tensor, image_sizes), sample in tqdm(zip(data_loader, questions), total=len(questions)):
+        question_id = sample["question_id"]
+        question = sample["question"]
 
         input_ids = input_ids.to(device="cuda", non_blocking=True)
 
@@ -221,8 +235,8 @@ def eval_model(args) -> None:
         ans_file.write(
             json.dumps(
                 {
-                    "question_id": idx,
-                    "prompt": cur_prompt,
+                    "question_id": question_id,
+                    "prompt": question,
                     "text": outputs,
                     "answer_id": ans_id,
                     "model_id": model_name,

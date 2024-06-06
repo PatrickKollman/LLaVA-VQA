@@ -13,8 +13,8 @@ MODEL_PATH="liuhaotian/llava-v1.5-13b"
 CKPT="llava-v1.5-13b"
 CONV_MODE="vicuna_v1"
 
-#VQA_DIR="/content/drive/MyDrive/VQA"
-VQA_DIR="/Users/patrickkollman/Google\ Drive/My\ Drive/VQA"
+VQA_DIR="/content/drive/MyDrive/VQA"
+#VQA_DIR="/Users/patrickkollman/Google\ Drive/My\ Drive/VQA"
 DATA_DIR="$VQA_DIR/data"
 
 SPLIT="v2_OpenEnded_mscoco_test-dev2015_questions"
