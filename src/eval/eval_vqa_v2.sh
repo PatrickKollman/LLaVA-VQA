@@ -13,23 +13,18 @@ MODEL_PATH="liuhaotian/llava-v1.5-13b"
 CKPT="llava-v1.5-13b"
 CONV_MODE="vicuna_v1"
 
-VQA_DIR="/content/drive/MyDrive/VQA"
-#VQA_DIR="/Users/patrickkollman/Google\ Drive/My\ Drive/VQA"
-DATA_DIR="$VQA_DIR/data"
+QUESTION_FILE="/content/v2_OpenEnded_mscoco_test-dev2015_questions.json"
+IMAGE_FOLDER="/content/test2015"
 
-SPLIT="v2_OpenEnded_mscoco_test-dev2015_questions"
-QUESTION_FILE="$DATA_DIR/Questions/$SPLIT.json"
-IMAGE_FOLDER="$DATA_DIR/Images/test2015"
-
-ANSWERS_DIR="$VQA_DIR/testing_results/answers"
-OUTPUT_FILE="$ANSWERS_DIR/$SPLIT/$CKPT/merge.jsonl"
+ANSWERS_DIR="/content/answers"
+OUTPUT_FILE="$ANSWERS_DIR/merge.json"
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
     CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m $VQA_LOADER \
         --model-path $MODEL_PATH \
         --question-file $QUESTION_FILE \
         --image-folder $IMAGE_FOLDER \
-        --answers-file $ANSWERS_DIR/$SPLIT/$CKPT/${CHUNKS}_${IDX}.json \
+        --answers-file $ANSWERS_DIR/${CHUNKS}_${IDX}.json \
         --num-chunks $CHUNKS \
         --chunk-idx $IDX \
         --temperature 0 \
@@ -38,13 +33,13 @@ done
 
 wait
 
-# # Clear out the output file if it exists.
-# > $OUTPUT_FILE
+# Clear out the output file if it exists.
+> $OUTPUT_FILE
 
-# # Loop through the indices and concatenate each file.
-# for IDX in $(seq 0 $((CHUNKS-1))); do
-#     cat $ANSWERS_DIR/$SPLIT/$CKPT/${CHUNKS}_${IDX}.json >> $OUTPUT_FILE
-# done
+# Loop through the indices and concatenate each file.
+for IDX in $(seq 0 $((CHUNKS-1))); do
+    cat $ANSWERS_DIR/${CHUNKS}_${IDX}.json >> $OUTPUT_FILE
+done
 
 # # python scripts/convert_vqav2_for_submission.py --split $SPLIT --ckpt $CKPT
 

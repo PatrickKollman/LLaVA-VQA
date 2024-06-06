@@ -187,7 +187,9 @@ def eval_model(args: argparse.Namespace) -> None:
     disable_torch_init()
     model_path = os.path.expanduser(args.model_path)
     model_name = get_model_name_from_path(model_path)
-    tokenizer, model, image_processor, _ = load_pretrained_model(model_path, args.model_base, model_name)
+    tokenizer, model, image_processor, _ = load_pretrained_model(
+        model_path, args.model_base, model_name, device_map="auto", offload_folder="offload", offload_state_dict=True
+    )
 
     # Questions
     with open(args.question_file, "r", encoding="utf-8") as f:
