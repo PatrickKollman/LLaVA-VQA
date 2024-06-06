@@ -5,7 +5,7 @@
 SHELL = /bin/zsh
 CONDA_ACTIVATE = source $$(conda info --base)/etc/profile.d/conda.sh ; conda activate ; conda activate
 VENV = llava
-PYTHON_SRC = data_visualization
+PYTHON_SRC = src
 
 format:
 	$(CONDA_ACTIVATE) $(VENV)

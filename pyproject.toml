@@ -1,6 +1,47 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "LLaVA-VQA"
+version = "0.0.1"
+description = "Training and evaluation code for LLaVA on VQA"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "accelerate==0.21.0",
+    "black",
+    "black[jupyter]",
+    "bitsandbytes",
+    "einops==0.6.1",
+    "einops-exts==0.0.4",
+    "fastapi",
+    "gradio==4.16.0",
+    "gradio_client==0.8.1",
+    "httpx==0.24.0",
+    "isort",
+    "llava@git+https://github.com/haotian-liu/LLaVA.git",
+    "markdown2[all]",
+    "mypy",
+    "numpy",
+    "peft",
+    "pydantic",
+    "pylint",
+    "requests",
+    "torch==2.1.2",
+    "torchvision==0.16.2",
+    "transformers==4.37.2",
+    "tokenizers==0.15.1",
+    "scikit-learn==1.2.2",
+    "sentencepiece==0.1.99",
+    "shortuuid",
+    "timm==0.6.13",
+    "uvicorn",
+]
+
+[project.optional-dependencies]
+train = ["deepspeed==0.12.6", "ninja", "wandb"]
+build = ["build", "twine"]
 
 [tool.black]
 line-length = 120
@@ -12,7 +53,9 @@ profile = "black"
 
 [[tool.mypy.overrides]]
 module = [
+    'llava.*',
     'numpy.*',
     'torch.*',
+    'tqdm.*',
 ]
 ignore_missing_imports = true
