@@ -167,7 +167,7 @@ def create_data_loader(
     data_loader = DataLoader(
         dataset,
         batch_size=batch_size,
-        num_workers=num_workers,
+        # num_workers=num_workers, # os.fork() raising Colab error with Multithreaded code
         shuffle=False,
         collate_fn=collate_fn,
     )
