@@ -141,7 +141,7 @@ def create_data_loader(
     image_processor: Any,
     model_config: Any,
     batch_size: int = 1,
-    num_workers: int = 2,  # Colab Restriction
+    num_workers: int = 0,
 ) -> DataLoader:
     """Create the LLaVA VQA dataloader.
 
@@ -152,7 +152,8 @@ def create_data_loader(
     :param image_processor: image processor for pretrained model (i.e CLIPImageProcessor)
     :param model_config: model config for pretrained model (i.e LLavaConfig)
     :param batch_size: batch size for DataLoader
-    :param num_workers: number of CPU workers for DataLoader
+    :param num_workers: how many subprocesses to use for data loading.
+        0 means that the data will be loaded in the main process.
     :return data_loader: VQA dataloader
     """
     assert batch_size == 1, "batch_size must be 1"
@@ -167,7 +168,7 @@ def create_data_loader(
     data_loader = DataLoader(
         dataset,
         batch_size=batch_size,
-        # num_workers=num_workers, # os.fork() raising Colab error with Multithreaded code
+        num_workers=num_workers,  # Make sure JAX does not compete with os.fork()
         shuffle=False,
         collate_fn=collate_fn,
     )
@@ -202,13 +203,15 @@ def eval_model(args: argparse.Namespace) -> None:
     ans_file = open(answers_file, "w", encoding="utf-8")  # pylint: disable=consider-using-with
 
     # DataLoader
+    cpu_count = os.cpu_count()
     data_loader = create_data_loader(
-        questions,
-        args.image_folder,
-        args.conv_mode,
-        tokenizer,
-        image_processor,
-        model.config,
+        questions=questions,
+        image_folder=args.image_folder,
+        conv_mode=args.conv_mode,
+        tokenizer=tokenizer,
+        image_processor=image_processor,
+        model_config=model.config,
+        num_workers=cpu_count if cpu_count is not None else 0,
     )
 
     # Evaluate
