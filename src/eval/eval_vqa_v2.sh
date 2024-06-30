@@ -16,7 +16,7 @@ CKPT="llava-v1.5-13b"
 CONV_MODE="vicuna_v1"
 
 # Data Paths
-IMAGE_FOLDER="/content/drive/MyDrive/VQA/data/Images/test2015"
+IMAGE_FOLDER="/content/test2015"
 QUESTION_FILE="/content/v2_OpenEnded_mscoco_test-dev2015_questions.json"
 ANSWERS_DIR="/content/answers"
 

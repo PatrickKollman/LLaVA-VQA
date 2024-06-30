@@ -141,7 +141,7 @@ def create_data_loader(
     image_processor: Any,
     model_config: Any,
     batch_size: int = 1,
-    num_workers: int = 4,
+    num_workers: int = 2,  # Colab Restriction
 ) -> DataLoader:
     """Create the LLaVA VQA dataloader.
 
