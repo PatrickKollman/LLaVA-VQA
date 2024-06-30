@@ -27,14 +27,14 @@ dependencies = [
     "pydantic",
     "pylint",
     "requests",
-    "torch==2.1.2",
+    "torch==2.3.0+cu121",  # Google Colab Instances
     "torchvision",
-    "transformers==4.37.2",
-    "tokenizers==0.15.1",
-    "scikit-learn==1.2.2",
-    "sentencepiece==0.1.99",
+    "transformers",
+    "tokenizers",
+    "scikit-learn",
+    "sentencepiece",
     "shortuuid",
-    "timm==0.6.13",
+    "timm",
     "uvicorn",
 ]
 
