@@ -8,7 +8,7 @@ IFS=',' read -ra GPULIST <<< "$gpu_list"
 CHUNKS=${#GPULIST[@]}
 
 # Python Script
-VQA_LOADER="eval.eval_vqa_v2"
+VQA_LOADER="eval.vqa.eval_vqa_v2"
 
 # Model
 MODEL_PATH="liuhaotian/llava-v1.5-13b"
