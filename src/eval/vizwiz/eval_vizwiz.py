@@ -202,6 +202,11 @@ def eval_model(args: argparse.Namespace) -> None:
     ans_file = open(answers_file, "w", encoding="utf-8")  # pylint: disable=consider-using-with
 
     # DataLoader
+    num_workers = args.num_workers
+    cpu_count = os.cpu_count()
+    if num_workers == 0 and cpu_count is not None:
+        num_workers = cpu_count
+
     data_loader = create_data_loader(
         questions=questions,
         image_folder=args.image_folder,
@@ -209,7 +214,7 @@ def eval_model(args: argparse.Namespace) -> None:
         tokenizer=tokenizer,
         image_processor=image_processor,
         model_config=model.config,
-        num_workers=args.num_workers,
+        num_workers=num_workers,
     )
 
     # Evaluate
@@ -241,7 +246,6 @@ def eval_model(args: argparse.Namespace) -> None:
                     "text": outputs,
                     "answer_id": ans_id,
                     "model_id": model_name,
-                    "metadata": {},
                 }
             )
             + "\n"
@@ -259,7 +263,7 @@ if __name__ == "__main__":
     parser.add_argument("--conv-mode", type=str, default="llava_v1")
     parser.add_argument("--num-chunks", type=int, default=1)
     parser.add_argument("--chunk-idx", type=int, default=0)
-    parser.add_argument("--num-workers", type=int, default=2)
+    parser.add_argument("--num-workers", type=int, default=0)
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
