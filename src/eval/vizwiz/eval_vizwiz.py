@@ -193,7 +193,7 @@ def eval_model(args: argparse.Namespace) -> None:
 
     # Questions
     with open(args.question_file, "r", encoding="utf-8") as f:
-        questions = json.load(f)["questions"]
+        questions = json.load(f)
     questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
 
     # Answers Output Directory
