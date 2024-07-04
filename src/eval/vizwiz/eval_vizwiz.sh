@@ -8,5 +8,5 @@ python -m eval.vizwiz.eval_vizwiz \
     --image-folder /content/test \
     --answers-file /content/drive/MyDrive/VizWiz/data/Answers/vizwiz-llava-v1.5-13b.json \
     --temperature 0 \
-    --conv-mode vicuna_v1
-
+    --conv-mode vicuna_v1 \
+    --num-workers 2
