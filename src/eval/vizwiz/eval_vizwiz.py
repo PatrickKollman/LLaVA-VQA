@@ -215,7 +215,6 @@ def eval_model(args: argparse.Namespace) -> None:
 
     # Evaluate
     for (input_ids, image_tensor, image_sizes), sample in tqdm(zip(data_loader, questions), total=len(questions)):
-        question_id = sample["question_id"]
         question = sample["question"]
 
         input_ids = input_ids.to(device="cuda", non_blocking=True)
@@ -239,7 +238,6 @@ def eval_model(args: argparse.Namespace) -> None:
         ans_file.write(
             json.dumps(
                 {
-                    "question_id": question_id,
                     "prompt": question,
                     "text": outputs,
                     "answer_id": ans_id,
