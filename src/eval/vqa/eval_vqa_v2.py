@@ -7,6 +7,8 @@ This code is based on the code written by Haotian Liu in the LLaVA repo at:
 (https://github.com/haotian-liu/LLaVA/blob/main/llava/eval/model_vqa_loader.py).
 """
 
+# pylint:disable=duplicate-code
+
 import argparse
 import json
 import math

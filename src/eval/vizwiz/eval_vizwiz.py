@@ -1,7 +1,7 @@
 """
-Model and data loader for LLaVA evaluation on VizWiz VQA test data.
+Model and data loader for LLaVA evaluation on VizWiz test data.
 
-VizWiz VQA dataset: https://vizwiz.org/tasks-and-datasets/vqa/
+VizWiz dataset: https://vizwiz.org/tasks-and-datasets/vqa/
 
 This code is based on the code written by Haotian Liu in the LLaVA repo at:
 (https://github.com/haotian-liu/LLaVA/blob/main/llava/eval/model_vqa_loader.py).
@@ -13,7 +13,6 @@ import math
 import os
 from typing import Any
 
-import shortuuid
 import torch
 from llava.constants import (
     DEFAULT_IM_END_TOKEN,

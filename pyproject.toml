@@ -16,6 +16,7 @@ dependencies = [
     "einops",
     "einops-exts",
     "fastapi",
+    "fire",
     "gradio",
     "gradio_client",
     "httpx",
@@ -52,6 +53,7 @@ profile = "black"
 
 [[tool.mypy.overrides]]
 module = [
+    'fire.*',
     'llava.*',
     'numpy.*',
     'torch.*',

@@ -15,7 +15,7 @@ for IDX in $(seq 0 $((CHUNKS-1))); do
         --answers-file /content/answers/vizwiz-llava-v1.5-7b.json \
         --temperature 0 \
         --conv-mode vicuna_v1 \
-        --num-workers 2
+        --num-workers 8
 done
 
 wait
