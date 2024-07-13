@@ -13,6 +13,7 @@ dependencies = [
     "black",
     "black[jupyter]",
     "bitsandbytes",
+    "deepspeed==0.12.6",
     "einops",
     "einops-exts",
     "fastapi",
@@ -23,6 +24,7 @@ dependencies = [
     "isort",
     "markdown2[all]",
     "mypy",
+    "ninja",
     "numpy",
     "peft",
     "pydantic",
@@ -37,11 +39,8 @@ dependencies = [
     "shortuuid",
     "timm",
     "uvicorn",
+    "wandb",
 ]
-
-[project.optional-dependencies]
-train = ["deepspeed==0.12.6", "ninja", "wandb"]
-build = ["build", "twine"]
 
 [tool.black]
 line-length = 120
