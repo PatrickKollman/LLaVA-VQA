@@ -9,7 +9,7 @@ CHUNKS=${#GPULIST[@]}
 
 for IDX in $(seq 0 $((CHUNKS-1))); do
     CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m eval.vizwiz.eval_vizwiz \
-        --model-path /content/drive/MyDrive/VizWiz/model_checkpoints/llava-v1.5-7b-task-lora/checkpoint-1 \
+        --model-path /content/drive/MyDrive/VizWiz/model_checkpoints/llava-v1.5-7b-task-lora/checkpoint-x \
         --model-base liuhaotian/llava-v1.5-7b \
         --question-file /content/test.json \
         --image-folder /content/test \

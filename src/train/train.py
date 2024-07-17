@@ -26,7 +26,7 @@ import logging
 import os
 import pathlib
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence
 
 import tokenizers
 import torch
@@ -87,8 +87,7 @@ class DataArguments:
     is_multimodal: bool = False
     image_folder: Optional[str] = field(default=None)
     image_aspect_ratio: str = "square"
-    mm_use_im_start_end: bool = field(default=False)
-    image_processor: Optional[CLIPVisionTower | CLIPVisionTowerS2] = field(default=None)
+    image_processor: Optional[Any] = field(default=None)
 
 
 @dataclass
@@ -327,7 +326,7 @@ def preprocess_multimodal(sources: List[List[Dict[str, str]]], data_args: DataAr
                         DEFAULT_IMAGE_TOKEN, "<Image>" + DEFAULT_IMAGE_TOKEN + "</Image>"
                     )
             replace_token = DEFAULT_IMAGE_TOKEN
-            if data_args.mm_use_im_start_end:
+            if data_args.mm_use_im_start_end:  # type: ignore
                 replace_token = DEFAULT_IM_START_TOKEN + replace_token + DEFAULT_IM_END_TOKEN
             sentence["value"] = sentence["value"].replace(DEFAULT_IMAGE_TOKEN, replace_token)
 
