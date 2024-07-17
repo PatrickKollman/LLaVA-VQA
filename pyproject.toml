@@ -30,7 +30,7 @@ dependencies = [
     "pydantic",
     "pylint",
     "requests",
-    "torch==2.3.0+cu121",  # Google Colab Instances
+    "torch==2.3.1+cu121",  # Google Colab Instances
     "torchvision",
     "transformers==4.37.2",  # Fixes 'LlavaLlamaForCausalLM.forward()' 'cache_position' issue
     "tokenizers",
