@@ -2,7 +2,7 @@
 
 # Global Batch Size = 128 = per_device_train_batch_size * num_gpus * gradient_accumulation_steps
 
-deepspeed /content/LLaVA-VQA/LLaVA/llava/train/train_mem.py \
+deepspeed /content/LLaVA-VQA/src/train/train.py \
     --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
     --deepspeed /content/LLaVA-VQA/LLaVA/scripts/zero3_offload.json \
     --model_name_or_path liuhaotian/llava-v1.5-7b \

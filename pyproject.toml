@@ -52,10 +52,13 @@ profile = "black"
 
 [[tool.mypy.overrides]]
 module = [
+    'deepspeed.*',
     'fire.*',
     'llava.*',
     'numpy.*',
+    'tokenizers.*',
     'torch.*',
+    'transformers.*',
     'tqdm.*',
 ]
 ignore_missing_imports = true
