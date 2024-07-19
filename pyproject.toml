@@ -9,7 +9,7 @@ description = "Training and evaluation code for LLaVA on VQA"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "accelerate",
+    "accelerate==0.27.2",  # Fixed checkpoint training
     "black",
     "black[jupyter]",
     "bitsandbytes",
@@ -32,7 +32,7 @@ dependencies = [
     "requests",
     "torch==2.3.1+cu121",  # Google Colab Instances
     "torchvision",
-    "transformers==4.37.2",  # Fixes 'LlavaLlamaForCausalLM.forward()' 'cache_position' issue
+    "transformers==4.39.3",  # Fixes checkpoint training and 'LlavaLlamaForCausalLM.forward()' 'cache_position' issue
     "tokenizers",
     "scikit-learn",
     "sentencepiece",
