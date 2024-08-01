@@ -30,10 +30,12 @@ Given an image and question about it, the task is to predict an accurate answer.
 
 Following the VQA challenge, we average over all 10 choose 9 sets of human annotators. The team which achieves the maximum average accuracy for all test visual questions wins this challenge.
 
-### Eval Leaderboard:
-https://eval.ai/web/challenges/challenge-page/2185/leaderboard
+### 
 
 # _**Team Kollman**_ Results:
+**Eval Leaderboard:** https://eval.ai/web/challenges/challenge-page/2185/leaderboard
+
+**Phase: test-standard2024-VQA, Split: test**
 
 ### Accuracy 
 
